@@ -32,17 +32,17 @@ class TVMazeApp:
         
         # Set how and where the window will appear on screen
         self.window_size = (self.screen_height * 4) // 5
-        position_top = (self.screen_height // 2)
-        position_left = (self.screen_width // 2) - (self.window_size)
+        if self.window_size < 500:
+            self.window_size = 500
+
+        position_top = (self.screen_height) // 16
+        position_left = (self.screen_width) // 8
 
         # Set button sizes properly now
         self.button_w = int(self.window_size / 10)
         self.button_h = int(self.window_size / 40) * 0.8
 
-        if self.window_size < 500:
-            self.window_size = 500
-
-        self.root.geometry(f"{self.window_size}x{self.window_size}+{position_top}+{position_left}")
+        self.root.geometry(f"{self.window_size}x{self.window_size}+{position_left}+{position_top}")
         self.root.resizable(False, False)
 
         # Set up Frames for Results and Actor Data
@@ -158,9 +158,9 @@ class TVMazeApp:
             iterator = -1
 
             # Set the font to scale with the length of the show name
-            default_label_font = font.Font(family="Helvetica", size=14 , weight="bold", underline=True)
+            default_label_font = font.Font(family="Helvetica", size=(int(self.window_size / 75)), weight="bold", underline=True)
             name_length = default_label_font.measure(self.show_picked)            
-            default_label_font.configure(size=14 - (name_length // 50) if name_length > 100 else 14)
+            default_label_font.configure(size=(int(self.window_size / 75)) - (name_length // 50) if name_length > 100 else (int(self.window_size / 75)))
 
             label = tk.Label(
                 self.text_frame, 
@@ -269,9 +269,9 @@ class TVMazeApp:
             iterator = -1
 
             # Set the font to scale with the length of the show name
-            default_label_font = font.Font(family="Helvetica", size=14 , weight="bold", underline=True)
+            default_label_font = font.Font(family="Helvetica", size=(int(self.window_size / 75)), weight="bold", underline=True)
             name_length = default_label_font.measure(self.show_picked)            
-            default_label_font.configure(size=14 - (name_length // 50) if name_length > 100 else 14)
+            default_label_font.configure(size=(int(self.window_size / 75)) - (name_length // 50) if name_length > 100 else (int(self.window_size / 75)))
             label = tk.Label(
                 self.text_frame, 
                 text=f"{len(episodes)} Episodes For Season {self.season_picked}", 
@@ -287,9 +287,9 @@ class TVMazeApp:
             )
 
             for episode in episodes:
-                base_font = font.Font(family="Helvetica", size=12)
+                base_font = font.Font(family="Helvetica", size=(int(self.window_size / 75)))
                 name_length = base_font.measure(episode['name'])
-                base_font.configure(size=12 - (name_length // 60) * (1000 // self.window_size) if name_length > 175 else 12)
+                base_font.configure(size=(int(self.window_size / 75)) - (name_length // 60) * (1000 // self.window_size) if name_length > 175 else (int(self.window_size / 75)))
 
                 iterator += 1
                 button_color = "white"
@@ -334,7 +334,7 @@ class TVMazeApp:
             episode_summary = episode['summary']
             summary_string = ' '.join(clean_word(word) for word in episode_summary.split())
 
-            detail_font = font.Font(family="Helvetica", size=(12 - (len(summary_string) // 100) * (1000 // self.window_size)), weight="bold", slant="roman")
+            detail_font = font.Font(family="Helvetica", size=((int(self.window_size / 75)) - (len(summary_string) // 100) * (1000 // self.window_size)), weight="bold", slant="roman")
             details = f"Title: {episode['name']}\n\nSummary: {summary_string}\n\n" \
                       f"Rating: {episode['rating']['average']}\n\nAir Date: {episode['airdate']}\n\n"
             label = tk.Label(self.info_frame, text=details, justify="left", wraplength=550, anchor="w", font=detail_font)
